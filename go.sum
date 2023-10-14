@@ -1,0 +1,8 @@
+github.com/andrisz/dbutil v0.0.0-20231014101523-6cd786ba7ec6 h1:/wV0JEmwMJejCCkUjjKXwo+HCqs7LxqSKQQOof+tB/o=
+github.com/andrisz/dbutil v0.0.0-20231014101523-6cd786ba7ec6/go.mod h1:JwD2cvXfd7kKFRod6ZVe2h6McsJ+uKzKUkgsi1j+dKY=
+github.com/go-sql-driver/mysql v1.7.1 h1:lUIinVbN1DY0xBg0eMOzmmtGoHwWBbvnWubQUrtU8EI=
+github.com/go-sql-driver/mysql v1.7.1/go.mod h1:OXbVy3sEdcQ2Doequ6Z5BW6fXNQTmx+9S1MCJN5yJMI=
+github.com/lib/pq v1.10.9 h1:YXG7RB+JIjhP29X+OtkiDnYaXQwpS4JEWq7dtCCRUEw=
+github.com/lib/pq v1.10.9/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=
+github.com/sijms/go-ora/v2 v2.7.19 h1:+p0V51zrnpchRIIfx9kcEFGNUXkC0q9uZiyh05tyybI=
+github.com/sijms/go-ora/v2 v2.7.19/go.mod h1:EHxlY6x7y9HAsdfumurRfTd+v8NrEOTR3Xl4FWlH6xk=
