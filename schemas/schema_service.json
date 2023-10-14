@@ -1,0 +1,15 @@
+{
+  "services": {
+    "serviceid": "services:serviceid",
+    "name": "$:Service {?}"
+  },
+  "service_problem_tag": {
+    "service_problem_tagid": "service_problem_tag:service_problem_tagid",
+    "serviceid": "services:serviceid"
+  },
+  "services_links": {
+    "linkid": "services_links:linkid",
+    "serviceupid": "services:serviceid",
+    "servicedownid": "services:serviceid"
+  }
+}

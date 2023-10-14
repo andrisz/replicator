@@ -1,0 +1,52 @@
+{
+	"items": {
+		"name": "$:Trap #{?}",
+		"itemid": "items:itemid",
+		"key_": "$:trap[{?}]"
+	},
+	"item_preproc": {
+		"item_preprocid": "item_preproc:item_preprocid",
+		"itemid": "items:itemid"
+	},
+	"item_rtdata": {
+		"itemid": "items:itemid"
+	},
+    "triggers": {
+        "triggerid": "triggers:triggerid",
+        "expression": "TriggerExpressionField",
+        "description": "$:Trigger #{?}",
+        "recovery_expression": "TriggerExpressionField"
+    },
+    "functions": {
+        "functionid": "functions:functionid",
+        "triggerid": "triggers:triggerid",
+	"itemid": "items:itemid"
+    },
+    "trigger_tag": {
+	"triggertagid": "trigger_tag:triggertagid",
+	"triggerid": "triggers:triggerid",
+	"value": "$:{?}"
+    },
+    "events": {
+	"eventid": "events:eventid",
+	"objectid": "triggers:triggerid",
+	"name": "$:Trigger #{?}"
+    },
+    "event_tag": {
+	"eventtagid": "event_tag:eventtagid",
+	"eventid": "events:eventid",
+	"value": "$:{?}"
+    },
+    "problem": {
+	"eventid": "events:eventid",
+	"objectid": "triggers:triggerid",
+	"name": "$:Trigger #{?}"
+    },
+    "problem_tag": {
+	"problemtagid": "problem_tag:problemtagid",
+	"eventid": "events:eventid",
+	"value": "$:{?}"
+    }
+}
+
+

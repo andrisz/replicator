@@ -1,0 +1,12 @@
+{
+	"escalations": {
+		"escalationid": "escalations:escalationid",
+		"eventid": "events:eventid"
+	},
+	"events": {
+		"eventid": "events:eventid"
+	},
+	"problem": {
+		"eventid": "events:eventid"
+	}
+}

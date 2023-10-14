@@ -1,0 +1,12 @@
+{
+    "triggers": {
+        "triggerid": "triggers:triggerid",
+        "expression": "TriggerExpressionField",
+        "description": "$",
+        "recovery_expression": "TriggerExpressionField"
+    },
+    "functions": {
+        "functionid": "functions:functionid",
+        "triggerid": "triggers:triggerid"
+    }
+}

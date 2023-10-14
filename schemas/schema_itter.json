@@ -1,0 +1,25 @@
+{
+	"items": {
+		"name": "$:Trap #{?}",
+		"itemid": "items:itemid",
+		"key_": "$:trap[{?}]"
+	},
+	"item_preproc": {
+		"item_preprocid": "item_preproc:item_preprocid",
+		"itemid": "items:itemid"
+	},
+	"item_rtdata": {
+		"itemid": "items:itemid"
+	},
+	"triggers": {
+		"triggerid": "triggers:triggerid",
+		"description": "$: Trap #{?} is zero",
+		"expression": "TriggerExpressionField",
+		"recovery_expression": "TriggerExpressionField"
+	},
+	"functions": {
+		"functionid": "functions:functionid",
+		"itemid": "items:itemid",
+		"triggerid": "triggers:triggerid"
+	}
+}

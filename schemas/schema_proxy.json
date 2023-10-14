@@ -1,0 +1,6 @@
+{
+	"hosts": {
+		"hostid": "hosts:hostid",
+		"host": "$"
+	}
+}

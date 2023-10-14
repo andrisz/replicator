@@ -1,0 +1,86 @@
+{
+	"hstgrp":{
+		"groupid":"hstgrp:groupid",
+		"name":"$"
+	},
+	"hosts": {
+		"host": "$:Host {?}",
+		"name": "$:Host {?}",
+		"hostid": "hosts:hostid"
+	},
+	"hosts_groups": {
+		"hostgroupid": "hosts_groups:hostgroupid",
+		"hostid": "hosts:hostid"
+	},
+	"items": {
+		"itemid": "items:itemid",
+		"hostid": "hosts:hostid"
+	},
+	"item_preproc": {
+		"item_preprocid": "item_preproc:item_preprocid",
+		"itemid": "items:itemid"
+	},
+	"item_rtdata": {
+		"itemid": "items:itemid"
+	},
+	"triggers": {
+		"triggerid": "triggers:triggerid",
+		"expression": "TriggerExpressionField",
+		"recovery_expression": "TriggerExpressionField"
+	},
+	"trigger_tag": {
+		"triggertagid": "trigger_tag:triggertagid",
+		"triggerid": "triggers:triggerid"
+	},
+	"functions": {
+		"functionid": "functions:functionid",
+		"itemid": "items:itemid",
+		"triggerid": "triggers:triggerid"
+	},
+	"maintenances":{
+		"maintenanceid": "maintenances:maintenanceid",
+		"name": "$"
+	},
+	"timeperiods":{
+		"timeperiodid": "timeperiods:timeperiodid"
+	},
+	"maintenances_windows":{
+		"maintenance_timeperiodid": "maintenances_windows:maintenance_timeperiodid",
+		"maintenanceid": "maintenances:maintenanceid",
+		"timeperiodid": "timeperiods:timeperiodid"
+	},
+	"maintenances_hosts":{
+		"maintenance_hostid": "maintenances_hosts:maintenance_hostid",
+		"maintenanceid": "maintenances:maintenanceid"
+	},
+	"maintenances_groups":{
+		"maintenance_groupid": "maintenances_groups:maintenance_groupid",
+		"maintenanceid": "maintenances:maintenanceid"
+	},
+	"maintenance_tag":{
+		"maintenancetagid":"maintenance_tag:maintenancetagid",
+		"maintenanceid": "maintenances:maintenanceid"
+	},
+	"escalations":{
+		"escalationid":"escalations:escalationid"
+	},
+	"proxy_autoreg_host":{
+		"id":"proxy_autoreg_host:id"
+	},
+	"events": {
+		"eventid": "events:eventid",
+		"objectid": "triggers:triggerid"
+	},
+	"event_tag": {
+		"eventtagid": "event_tag:eventtagid",
+		"eventid": "events:eventid"
+	},
+	"problem": {
+		"eventid": "events:eventid",
+		"objectid": "triggers:triggerid"
+	},
+	"problem_tag": {
+		"problemtagid": "problem_tag:problemtagid",
+		"eventid": "events:eventid"
+	}	
+}
