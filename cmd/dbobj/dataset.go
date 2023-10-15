@@ -1,5 +1,10 @@
 package main
 
+type ExtTable struct {
+	Columns []string    `json:"columns"`
+	Rows    [][]*string `json:"rows"`
+}
+
 type Dataset struct {
 	tables map[string]*Table
 }

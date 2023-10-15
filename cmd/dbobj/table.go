@@ -5,12 +5,17 @@ import (
 	"strings"
 )
 
+type Row struct {
+	scanned bool
+	fields  []any
+}
+
 type Table struct {
 	name   string
 	schema map[string]string
 	cols   []string
 	colmap map[string]int
-	rows   [][]any
+	rows   []*Row
 	index  map[uint64]bool
 }
 
@@ -20,7 +25,7 @@ func NewTable(name string, schema map[string]string, cols []string) *Table {
 		schema: schema,
 		cols:   cols,
 		colmap: make(map[string]int),
-		rows:   make([][]any, 0),
+		rows:   make([]*Row, 0),
 		index:  make(map[uint64]bool),
 	}
 
@@ -66,5 +71,5 @@ func (t *Table) append(row []*string) {
 		}
 	}
 
-	t.rows = append(t.rows, fields)
+	t.rows = append(t.rows, &Row{scanned: false, fields: fields})
 }

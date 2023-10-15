@@ -1,15 +1,22 @@
 package main
 
+type FieldSetter interface {
+	Value() *string
+}
+
 type Field struct {
-	value any
+	value *string
 }
 
 func (f *Field) String() string {
-	s := f.value.(*string)
-	if s == nil {
+	if f.value == nil {
 		return "null"
 	}
-	return *s
+	return *f.value
+}
+
+func (f *Field) Value() *string {
+	return f.value
 }
 
 type TriggerExpressionField struct {

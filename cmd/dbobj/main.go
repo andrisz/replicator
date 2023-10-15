@@ -21,17 +21,35 @@ func main() {
 	}
 	defer db.Close()
 
-	ds, err := GetDataset(db, schema, "triggers:triggerid", []string{"23336"})
+	/*
+		ds, err := NewDatasetFromDB(db, schema, "triggers:triggerid", []string{"23364"})
+		if err != nil {
+			panic(fmt.Sprintf("Cannot read dataset: %s", err))
+		}
+	*/
+
+	ds, err := NewDatasetFromFile("test.json", schema)
 	if err != nil {
 		panic(fmt.Sprintf("Cannot read dataset: %s", err))
 	}
 
-	fmt.Printf("DATASET: %+v\n", *ds)
+	for name, table := range ds.tables {
+		fmt.Printf("TABLE: %s\n", name)
 
-	fmt.Printf("TABLE: %+v\n", ds.tables["triggers"])
-
-	for i, v := range ds.tables["triggers"].rows[0] {
-		fmt.Printf("%s: %+v (%T)\n", ds.tables["triggers"].cols[i], v, v)
-
+		for _, row := range table.rows {
+			fmt.Printf("    ")
+			for _, col := range row.fields {
+				fmt.Printf("%s, ", col)
+			}
+			fmt.Printf("\n")
+		}
+		fmt.Printf("\n")
 	}
+
+	/*
+		err = ds.Export("test.json")
+		if err != nil {
+			panic(fmt.Sprintf("Cannot export dataset: %s", err))
+		}
+	*/
 }

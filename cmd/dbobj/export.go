@@ -2,7 +2,11 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
+	"os"
+	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -10,6 +14,75 @@ type Ref struct {
 	srcField string
 	dstTable string
 	dstField string
+}
+
+func sortNumbers(data []string) ([]string, error) {
+	var lastErr error
+	sort.Slice(data, func(i, j int) bool {
+		a, err := strconv.ParseInt(data[i], 10, 64)
+		if err != nil {
+			lastErr = err
+			return false
+		}
+		b, err := strconv.ParseInt(data[j], 10, 64)
+		if err != nil {
+			lastErr = err
+			return false
+		}
+		return a < b
+	})
+	return data, lastErr
+}
+
+func (ds *Dataset) getLinkedObjects(db *sql.DB, schema Schema, refs map[string][]*Ref) error {
+	for newData := true; newData; {
+		newData = false
+		for name, table := range ds.tables {
+			tableRefs, ok := refs[name]
+			if !ok {
+				continue
+			}
+
+			for _, ref := range tableRefs {
+				ids := make([]string, 0)
+
+				index := table.colmap[ref.srcField]
+
+				for _, row := range table.rows {
+					if !row.scanned {
+						f, _ := row.fields[index].(FieldSetter)
+						if f.Value() != nil {
+							ids = append(ids, *f.Value())
+						}
+					}
+				}
+
+				if len(ids) > 0 {
+					sortedIds, err := sortNumbers(ids)
+					if err != nil {
+						return err
+					}
+					num, err := ds.getObjects(db, schema, ref.dstTable, ref.dstField, sortedIds)
+					if err != nil {
+						return err
+					}
+					if num > 0 {
+						newData = true
+					}
+				}
+			}
+
+			for _, row := range table.rows {
+				row.scanned = true
+			}
+
+			if newData {
+				break
+			}
+		}
+	}
+
+	return nil
 }
 
 func (ds *Dataset) getObjects(db *sql.DB, schema Schema, tableName string, fieldName string, ids []string) (
@@ -58,7 +131,42 @@ func (ds *Dataset) getObjects(db *sql.DB, schema Schema, tableName string, field
 	return rowsNum, nil
 }
 
-func GetDataset(db *sql.DB, schema Schema, ref string, ids []string) (*Dataset, error) {
+func (ds *Dataset) Export(filename string) error {
+	data := make(map[string]ExtTable)
+
+	for name, table := range ds.tables {
+		expTable := ExtTable{
+			Columns: table.cols,
+			Rows:    make([][]*string, 0),
+		}
+
+		for _, row := range table.rows {
+			expRow := make([]*string, len(table.cols))
+
+			for i, col := range row.fields {
+				expRow[i] = col.(FieldSetter).Value()
+			}
+
+			expTable.Rows = append(expTable.Rows, expRow)
+		}
+
+		data[name] = expTable
+	}
+
+	b, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile(filename, b, 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func NewDatasetFromDB(db *sql.DB, schema Schema, ref string, ids []string) (*Dataset, error) {
 	refs := make(map[string][]*Ref)
 	ds := NewDataset()
 
@@ -84,6 +192,13 @@ func GetDataset(db *sql.DB, schema Schema, ref string, ids []string) (*Dataset, 
 		if err != nil {
 			return nil, err
 		}
+
+		err = ds.getLinkedObjects(db, schema, refs)
+		if err != nil {
+			return nil, err
+		}
+
+		// TODO: initialize fields ?
 	}
 
 	return ds, nil
