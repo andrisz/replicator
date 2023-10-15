@@ -1,13 +1,15 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
 	"strconv"
 	"strings"
 )
 
 type Row struct {
 	scanned bool
-	fields  []any
+	fields  []FieldAccessor
 }
 
 type Table struct {
@@ -46,24 +48,24 @@ func (t *Table) append(row []*string) {
 	}
 	t.index[id] = true
 
-	fields := make([]any, len(row))
+	fields := make([]FieldAccessor, len(row))
 
 	for i, v := range row {
 
 		if def, ok := t.schema[t.cols[i]]; ok {
 			switch def {
 			case "TriggerExpressionField":
-				fields[i] = &TriggerExpressionField{Field{value: v}}
+				fields[i] = &TriggerExpressionField{Field: Field{value: v}}
 			case "$":
-				fields[i] = &IterField{Field{value: v}}
+				fields[i] = &IterField{Field: Field{value: v}, pattern: v}
 			default:
 				ref := strings.Split(def, ":")
 				if ref[0] == "$" {
-					fields[i] = &IterField{Field{value: v}}
+					fields[i] = &IterField{Field: Field{value: v}, pattern: &ref[1]}
 				} else if ref[0] == t.name && ref[len(ref)-1] == t.cols[i] {
-					fields[i] = &AutoincField{Field{value: v}}
+					fields[i] = &AutoincField{Field: Field{value: v}}
 				} else {
-					fields[i] = &RefField{Field{value: v}}
+					fields[i] = &RefField{Field: Field{value: v}, srcTable: ref[0], srcField: ref[len(ref)-1]}
 				}
 			}
 		} else {
@@ -72,4 +74,25 @@ func (t *Table) append(row []*string) {
 	}
 
 	t.rows = append(t.rows, &Row{scanned: false, fields: fields})
+}
+
+func (t *Table) flush(db *sql.DB) error {
+
+	fmt.Printf("TABLE: %s\n", t.name)
+
+	for _, row := range t.rows {
+		fmt.Printf("    ")
+		for _, col := range row.fields {
+			v := col.Value()
+			if v == nil {
+				s := "null"
+				v = &s
+			}
+			fmt.Printf("%s, ", *v)
+		}
+		fmt.Printf("\n")
+	}
+	fmt.Printf("\n")
+
+	return nil
 }

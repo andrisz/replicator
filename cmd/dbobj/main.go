@@ -46,6 +46,10 @@ func main() {
 		fmt.Printf("\n")
 	}
 
+	err = ds.importObjects(db, 2)
+	if err != nil {
+		panic(fmt.Sprintf("Cannot import dataset: %s", err))
+	}
 	/*
 		err = ds.Export("test.json")
 		if err != nil {

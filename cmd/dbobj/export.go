@@ -50,9 +50,8 @@ func (ds *Dataset) getLinkedObjects(db *sql.DB, schema Schema, refs map[string][
 
 				for _, row := range table.rows {
 					if !row.scanned {
-						f, _ := row.fields[index].(FieldSetter)
-						if f.Value() != nil {
-							ids = append(ids, *f.Value())
+						if row.fields[index].Value() != nil {
+							ids = append(ids, *row.fields[index].Value())
 						}
 					}
 				}
@@ -135,22 +134,22 @@ func (ds *Dataset) Export(filename string) error {
 	data := make(map[string]ExtTable)
 
 	for name, table := range ds.tables {
-		expTable := ExtTable{
+		extTable := ExtTable{
 			Columns: table.cols,
 			Rows:    make([][]*string, 0),
 		}
 
 		for _, row := range table.rows {
-			expRow := make([]*string, len(table.cols))
+			extRow := make([]*string, len(table.cols))
 
-			for i, col := range row.fields {
-				expRow[i] = col.(FieldSetter).Value()
+			for i, f := range row.fields {
+				extRow[i] = f.Value()
 			}
 
-			expTable.Rows = append(expTable.Rows, expRow)
+			extTable.Rows = append(extTable.Rows, extRow)
 		}
 
-		data[name] = expTable
+		data[name] = extTable
 	}
 
 	b, err := json.Marshal(data)
