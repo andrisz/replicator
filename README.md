@@ -1,3 +1,4 @@
+```
 Zabbix database object replicator.
 
 This utility can export an object with its related data and replicate
@@ -53,3 +54,4 @@ Import 10 copies of the exported host object set:
 
 ./replicator -u zb -p 2b -d zbtest -s schema.json -i -f host.json -n 10
 
+```
