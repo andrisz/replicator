@@ -1,5 +1,5 @@
-github.com/andrisz/dbutil v0.0.0-20231014101523-6cd786ba7ec6 h1:/wV0JEmwMJejCCkUjjKXwo+HCqs7LxqSKQQOof+tB/o=
-github.com/andrisz/dbutil v0.0.0-20231014101523-6cd786ba7ec6/go.mod h1:JwD2cvXfd7kKFRod6ZVe2h6McsJ+uKzKUkgsi1j+dKY=
+github.com/andrisz/dbutil v0.0.0-20231014102803-8efd3a3d2f73 h1:uPV2W/jQ29+t5mcH2Pe7f6LRJ44xc3OZtpiOYuwnydg=
+github.com/andrisz/dbutil v0.0.0-20231014102803-8efd3a3d2f73/go.mod h1:JwD2cvXfd7kKFRod6ZVe2h6McsJ+uKzKUkgsi1j+dKY=
 github.com/go-sql-driver/mysql v1.7.1 h1:lUIinVbN1DY0xBg0eMOzmmtGoHwWBbvnWubQUrtU8EI=
 github.com/go-sql-driver/mysql v1.7.1/go.mod h1:OXbVy3sEdcQ2Doequ6Z5BW6fXNQTmx+9S1MCJN5yJMI=
 github.com/lib/pq v1.10.9 h1:YXG7RB+JIjhP29X+OtkiDnYaXQwpS4JEWq7dtCCRUEw=
