@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	"github.com/andrisz/dbutil"
 )
 
 type Row struct {
@@ -77,22 +79,24 @@ func (t *Table) append(row []*string) {
 }
 
 func (t *Table) flush(db *sql.DB) error {
+	cols := make([]any, len(t.cols))
 
-	fmt.Printf("TABLE: %s\n", t.name)
+	s := fmt.Sprintf("insert into %s (%s) values (%s)",
+		t.name, strings.Join(t.cols, ","), strings.Repeat(",?", len(t.cols))[1:])
+	stmt, err := db.Prepare(dbutil.SetPlaceholders(s))
+	if err != nil {
+		return err
+	}
 
 	for _, row := range t.rows {
-		fmt.Printf("    ")
-		for _, col := range row.fields {
-			v := col.Value()
-			if v == nil {
-				s := "null"
-				v = &s
-			}
-			fmt.Printf("%s, ", *v)
+		for i, f := range row.fields {
+			cols[i] = f.Value()
 		}
-		fmt.Printf("\n")
+		_, err = stmt.Exec(cols...)
+		if err != nil {
+			return err
+		}
 	}
-	fmt.Printf("\n")
 
 	return nil
 }

@@ -159,6 +159,11 @@ func (ds *Dataset) importObjects(db *sql.DB, num int) error {
 		}
 	}
 
+	_, err = db.Exec("delete from ids")
+	if err != nil {
+		return err
+	}
+
 	err = tx.Commit()
 	if err != nil {
 		return err
