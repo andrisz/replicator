@@ -87,6 +87,7 @@ func (t *Table) flush(db *sql.DB) error {
 	if err != nil {
 		return err
 	}
+	defer stmt.Close()
 
 	for _, row := range t.rows {
 		for i, f := range row.fields {

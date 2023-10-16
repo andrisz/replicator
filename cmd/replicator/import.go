@@ -133,7 +133,7 @@ func (ds *Dataset) importObjects(db *sql.DB, num int) error {
 	for i := 0; i < num; i++ {
 		for _, table := range tables {
 			if i%1000 == 0 {
-				fmt.Printf("Importing %s ...\n", table.name)
+				fmt.Printf("[%d] Importing %s ...\n", i, table.name)
 			}
 			for _, row := range table.rows {
 				for _, field := range row.fields {

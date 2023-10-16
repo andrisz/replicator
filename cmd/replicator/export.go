@@ -98,6 +98,7 @@ func (ds *Dataset) getObjects(db *sql.DB, schema Schema, tableName string, field
 	if err != nil {
 		return 0, err
 	}
+	defer rows.Close()
 
 	table, ok := ds.tables[tableName]
 	if !ok {
