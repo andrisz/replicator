@@ -3,11 +3,15 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math"
 	"os"
 	"regexp"
 	"strings"
+
+	"github.com/andrisz/dbutil"
+	clone "github.com/huandu/go-clone/generic"
 )
 
 func (ds *Dataset) getSortedTables() []*Table {
@@ -58,11 +62,11 @@ func (ds *Dataset) findField(tablename string, fieldname string, value string) (
 	return nil, fmt.Errorf("Cannot fied reference column %s:%s with value %s", tablename, fieldname, value)
 }
 
-func (ds *Dataset) initFields(db *sql.DB, num int) error {
+func (ds *Dataset) initFields(db *sql.DB, total, offset int) error {
 	var err error
 	increments := make(map[string]*Increment)
 
-	iterlen := int(math.Log10(float64(num))) + 1
+	iterlen := int(math.Log10(float64(total))) + 1
 	reFunction := regexp.MustCompile(`{[0-9]+}`)
 
 	for _, table := range ds.tables {
@@ -73,6 +77,7 @@ func (ds *Dataset) initFields(db *sql.DB, num int) error {
 					tag := fmt.Sprintf("%s:%s", table.name, table.cols[j])
 					if increment, ok := increments[tag]; ok {
 						v.inc = increment
+						v.inc.refcount += 1
 					} else {
 						v.inc, err = NewIncrement(db, table.name, table.cols[j])
 						if err != nil {
@@ -92,6 +97,7 @@ func (ds *Dataset) initFields(db *sql.DB, num int) error {
 					}
 				case *IterField:
 					v.len = iterlen
+					v.num += offset
 				case *TriggerExpressionField:
 					v.functions = make(map[string]FieldAccessor)
 					functions := reFunction.FindAllString(*v.value, -1)
@@ -105,13 +111,22 @@ func (ds *Dataset) initFields(db *sql.DB, num int) error {
 				}
 			}
 		}
+	}
 
+	for _, inc := range increments {
+		inc.id += uint64(offset * inc.refcount)
 	}
 
 	return nil
 }
 
-func (ds *Dataset) importObjects(db *sql.DB, num int) error {
+func (ds *Dataset) importObjectRange(dbHost, dbUser, dbPassword, dbName string) error {
+	db, err := dbutil.Connect(dbHost, dbUser, dbPassword, dbName)
+	if err != nil {
+		panic(fmt.Sprintf("Cannot connect to database: %s", err))
+	}
+	defer db.Close()
+
 	tables := ds.getSortedTables()
 
 	tx, err := db.Begin()
@@ -125,15 +140,10 @@ func (ds *Dataset) importObjects(db *sql.DB, num int) error {
 		}
 	}()
 
-	err = ds.initFields(db, num)
-	if err != nil {
-		return err
-	}
-
-	for i := 0; i < num; i++ {
+	for i := 0; i < ds.importNum; i++ {
 		for _, table := range tables {
 			if i%1000 == 0 {
-				fmt.Printf("[%d] Importing %s ...\n", i, table.name)
+				fmt.Printf("[%d.%d] Importing %s ...\n", ds.jobIndex, i, table.name)
 			}
 			for _, row := range table.rows {
 				for _, field := range row.fields {
@@ -171,6 +181,51 @@ func (ds *Dataset) importObjects(db *sql.DB, num int) error {
 		return err
 	}
 
+	return nil
+}
+
+func (ds *Dataset) importObjects(db *sql.DB, num int, dbHost, dbUser, dbPassword, dbName string, jobNum int) error {
+	var errmsg strings.Builder
+	ch := make(chan any)
+
+	dss := make([]*Dataset, jobNum)
+	rangeAdjust := num % jobNum
+	offset := 0
+
+	for i := 0; i < jobNum; i++ {
+		dss[i] = clone.Clone(ds)
+		dss[i].jobIndex = i
+		dss[i].importNum = num / jobNum
+		if rangeAdjust > 0 {
+			rangeAdjust--
+			dss[i].importNum++
+		}
+
+		err := dss[i].initFields(db, num, offset)
+		if err != nil {
+			return err
+		}
+
+		offset += dss[i].importNum
+	}
+
+	for i := 0; i < jobNum; i++ {
+		go func(index int) {
+			ch <- dss[index].importObjectRange(dbHost, dbUser, dbPassword, dbName)
+		}(i)
+	}
+
+	for i := 0; i < jobNum; i++ {
+		v := <-ch
+		if v != nil {
+			err := v.(error)
+			errmsg.WriteString(fmt.Sprintf("Import job failed: %s\n", err))
+		}
+	}
+
+	if errmsg.Len() != 0 {
+		return errors.New(errmsg.String())
+	}
 	return nil
 }
 

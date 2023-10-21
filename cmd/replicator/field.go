@@ -79,7 +79,8 @@ func (f *IterField) Value() *string {
 }
 
 type Increment struct {
-	id uint64
+	id       uint64
+	refcount int
 }
 
 func NewIncrement(db *sql.DB, table string, field string) (*Increment, error) {
@@ -96,7 +97,7 @@ func NewIncrement(db *sql.DB, table string, field string) (*Increment, error) {
 		}
 	}
 
-	return &Increment{id: id}, nil
+	return &Increment{id: id, refcount: 1}, nil
 }
 
 func (i *Increment) Inc() {

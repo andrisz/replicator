@@ -8,7 +8,9 @@ type ExtTable struct {
 }
 
 type Dataset struct {
-	tables map[string]*Table
+	tables    map[string]*Table
+	importNum int
+	jobIndex  int
 }
 
 func NewDataset() *Dataset {

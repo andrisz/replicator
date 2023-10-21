@@ -20,6 +20,7 @@ var (
 	objectId   uint64
 	objectNum  int
 	dataFile   string
+	jobNum     int
 )
 
 func cmdlineError(msg string) {
@@ -41,6 +42,7 @@ func main() {
 	flag.BoolVar(&modeImport, "i", false, "import data")
 	flag.Uint64Var(&objectId, "id", 0, "export object id")
 	flag.IntVar(&objectNum, "n", 0, "number of replications")
+	flag.IntVar(&jobNum, "j", 1, "number of parallel import jobs")
 	flag.Parse()
 
 	fmt.Printf("Database object replicator\n\n")
@@ -70,9 +72,15 @@ func main() {
 		if objectId == 0 {
 			cmdlineError("Export object id is not set")
 		}
+		if jobNum != 1 {
+			cmdlineError("Data export support only single job")
+		}
 	} else if modeImport {
 		if objectNum == 0 {
 			cmdlineError("Number of replications is not set")
+		}
+		if jobNum < 1 || jobNum > 32 {
+			cmdlineError("Invalid number of import jobs, supported range is [1:32]")
 		}
 	} else {
 		cmdlineError("Either export or import mode must be set")
@@ -109,7 +117,7 @@ func main() {
 			panic(fmt.Sprintf("Cannot read dataset: %s", err))
 		}
 
-		err = ds.importObjects(db, objectNum)
+		err = ds.importObjects(db, objectNum, dbHost, dbUser, dbPassword, dbName, jobNum)
 		if err != nil {
 			panic(fmt.Sprintf("Cannot import dataset: %s", err))
 		}
