@@ -186,19 +186,17 @@ func NewDatasetFromDB(db *sql.DB, schema Schema, ref string, ids []string) (*Dat
 				refs[table] = append(refs[table], &Ref{srcField: field, dstTable: d[0], dstField: d[len(d)-1]})
 			}
 		}
+	}
 
-		r := strings.Split(ref, ":")
-		_, err := ds.getObjects(db, schema, r[0], r[1], ids)
-		if err != nil {
-			return nil, err
-		}
+	r := strings.Split(ref, ":")
+	_, err := ds.getObjects(db, schema, r[0], r[1], ids)
+	if err != nil {
+		return nil, err
+	}
 
-		err = ds.getLinkedObjects(db, schema, refs)
-		if err != nil {
-			return nil, err
-		}
-
-		// TODO: initialize fields ?
+	err = ds.getLinkedObjects(db, schema, refs)
+	if err != nil {
+		return nil, err
 	}
 
 	return ds, nil

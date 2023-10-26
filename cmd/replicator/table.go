@@ -27,13 +27,14 @@ func NewTable(name string, schema map[string]string, cols []string) *Table {
 	t := Table{
 		name:   name,
 		schema: schema,
-		cols:   cols,
+		cols:   make([]string, len(cols)),
 		colmap: make(map[string]int),
 		rows:   make([]*Row, 0),
 		index:  make(map[uint64]bool),
 	}
 
 	for i, col := range cols {
+		t.cols[i] = strings.ToLower(cols[i])
 		t.colmap[col] = i
 	}
 
