@@ -12,6 +12,10 @@
 		"hostgroupid": "hosts_groups:hostgroupid",
 		"hostid": "hosts:hostid"
 	},
+	"hostmacro": {
+		"hostmacroid": "hostmacro:hostmacroid",
+		"hostid": "hosts:hostid"
+	},
 	"items": {
 		"itemid": "items:itemid",
 		"hostid": "hosts:hostid"
