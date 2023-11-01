@@ -8,13 +8,22 @@
 		"name": "$:Host {?}",
 		"hostid": "hosts:hostid"
 	},
+	"hostmacro": {
+		"hostmacroid": "hostmacro:hostmacroid",
+		"hostid": "hosts:hostid",
+		"value": "$"
+	},
 	"hosts_groups": {
-		"hostgroupid": "hosts_groups:hostgroupid",
+		"hosttagid": "hosts_groups:hosttagid",
 		"hostid": "hosts:hostid"
 	},
 	"hostmacro": {
 		"hostmacroid": "hostmacro:hostmacroid",
 		"hostid": "hosts:hostid"
+	"host_tag": {
+		"hostgroupid": "host_tag:hostgroupid",
+		"hostid": "hosts:hostid",
+		"value": "$"
 	},
 	"items": {
 		"itemid": "items:itemid",
@@ -22,6 +31,10 @@
 	},
 	"item_preproc": {
 		"item_preprocid": "item_preproc:item_preprocid",
+		"itemid": "items:itemid"
+	},
+	"item_tag": {
+		"itemtagid": "item_tag:itemtagid",
 		"itemid": "items:itemid"
 	},
 	"item_rtdata": {

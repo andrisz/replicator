@@ -11,42 +11,47 @@
 	"item_rtdata": {
 		"itemid": "items:itemid"
 	},
-    "triggers": {
-        "triggerid": "triggers:triggerid",
-        "expression": "TriggerExpressionField",
-        "description": "$:Trigger #{?}",
-        "recovery_expression": "TriggerExpressionField"
-    },
-    "functions": {
-        "functionid": "functions:functionid",
-        "triggerid": "triggers:triggerid",
+	"item_tag": {
+		"itemtagid": "item_tag:itemtagid",
+		"itemid": "items:itemid",
+		"value": "$"
+	},
+	"triggers": {
+		"triggerid": "triggers:triggerid",
+		"expression": "TriggerExpressionField",
+		"description": "$:Trigger #{?}",
+		"recovery_expression": "TriggerExpressionField"
+	},
+	"functions": {
+		"functionid": "functions:functionid",
+		"triggerid": "triggers:triggerid",
 		"itemid": "items:itemid"
-    },
-    "trigger_tag": {
+	},
+	"trigger_tag": {
 		"triggertagid": "trigger_tag:triggertagid",
 		"triggerid": "triggers:triggerid",
-		"value": "$:{?}"
-    },
-    "events": {
+		"value": "$"
+	},
+	"events": {
 		"eventid": "events:eventid",
 		"objectid": "triggers:triggerid",
 		"name": "$:Trigger #{?}"
-    },
-    "event_tag": {
+	},
+	"event_tag": {
 		"eventtagid": "event_tag:eventtagid",
 		"eventid": "events:eventid",
-		"value": "$:{?}"
-    },
-    "problem": {
+		"value": "$:"
+	},
+	"problem": {
 		"eventid": "events:eventid",
 		"objectid": "triggers:triggerid",
 		"name": "$:Trigger #{?}"
-    },
-    "problem_tag": {
+	},
+	"problem_tag": {
 		"problemtagid": "problem_tag:problemtagid",
 		"eventid": "events:eventid",
-		"value": "$:{?}"
-    }
-}
+		"value": "$"
+	}
+	}
 
 
