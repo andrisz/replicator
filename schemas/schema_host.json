@@ -14,7 +14,7 @@
 		"value": "$"
 	},
 	"hosts_groups": {
-		"hosttagid": "hosts_groups:hosttagid",
+		"hostgroupid": "hosts_groups:hostgroupid",
 		"hostid": "hosts:hostid"
 	},
 	"hostmacro": {
@@ -22,7 +22,7 @@
 		"hostid": "hosts:hostid"
 	},
 	"host_tag": {
-		"hostgroupid": "host_tag:hostgroupid",
+		"hosttagid": "host_tag:hosttagid",
 		"hostid": "hosts:hostid",
 		"value": "$"
 	},
