@@ -20,6 +20,7 @@
 	"hostmacro": {
 		"hostmacroid": "hostmacro:hostmacroid",
 		"hostid": "hosts:hostid"
+	},
 	"host_tag": {
 		"hostgroupid": "host_tag:hostgroupid",
 		"hostid": "hosts:hostid",
