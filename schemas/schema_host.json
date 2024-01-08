@@ -24,7 +24,7 @@
 	"host_tag": {
 		"hosttagid": "host_tag:hosttagid",
 		"hostid": "hosts:hostid",
-		"value": "$"
+		"value": "$:host.{?}"
 	},
 	"items": {
 		"itemid": "items:itemid",
