@@ -91,13 +91,13 @@ func NewIncrement(db *sql.DB, table string, field string) (*Increment, error) {
 
 	var id uint64
 	if rows.Next() {
-		var v any
+		var v *uint64
 		err := rows.Scan(&v)
 		if err != nil {
 			return nil, err
 		}
 		if v != nil {
-			id = v.(uint64)
+			id = *v
 		}
 	}
 
