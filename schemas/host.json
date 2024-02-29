@@ -19,16 +19,25 @@
 	},
 	"hostmacro": {
 		"hostmacroid": "hostmacro:hostmacroid",
-		"hostid": "hosts:hostid"
+		"hostid": "hosts:hostid",
+		"value": "$"
 	},
 	"host_tag": {
 		"hosttagid": "host_tag:hosttagid",
 		"hostid": "hosts:hostid",
 		"value": "$:host.{?}"
 	},
+	"interface": {
+		"interfaceid": "interface:interfaceid",
+		"hostid": "hosts:hostid"
+	},
+	"interface_snmp": {
+		"interfaceid": "interface:interfaceid"
+	},
 	"items": {
 		"itemid": "items:itemid",
-		"hostid": "hosts:hostid"
+		"hostid": "hosts:hostid",
+		"interfaceid": "interface:interfaceid"
 	},
 	"item_preproc": {
 		"item_preprocid": "item_preproc:item_preprocid",

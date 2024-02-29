@@ -19,7 +19,7 @@
 	"triggers": {
 		"triggerid": "triggers:triggerid",
 		"expression": "TriggerExpressionField",
-		"description": "$:Trigger #{?}",
+		"description": "$:Calcualted item #{?} has negative value",
 		"recovery_expression": "TriggerExpressionField"
 	},
 	"functions": {
